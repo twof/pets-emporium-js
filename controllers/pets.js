@@ -4,27 +4,35 @@ var Pet = require('../models/pet');
 
 // PETS NEW
 router.get('/new', function(req, res, next) {
-  res.render('pets-new');
+    res.render('pets-new');
 });
 
 // PETS SHOW
 router.get('/:id', function(req, res, next) {
-  Pet.findById(req.params.id).populate('comments').exec(function (err, pet) {
+    Pet.findById(req.params.id).populate('comments').exec(function (err, pet) {
+        if(err) {
+            switch(err.name) {
+                case 'CastError':
+                    return res.status(404).send(err);
+            }
+        }
 
-    res.render('pets-show', { pet: pet });
-  });
+        res.render('pets-show', { pet: pet });
+    });
 });
 
 
 // CREATE POST
 router.post('/', function(req, res, next) {
-  var pet = new Pet(req.body);
+    var pet = new Pet(req.body);
 
-  pet.save(function (err) {
-    if (err) { return res.status(400).send(err) }
-    
-    res.send(pet);
-  });
+    pet.save(function (err) {
+        if (err) {
+            return res.status(400).send(err);
+        }
+
+        res.send(pet);
+    });
 });
 
 module.exports = router;

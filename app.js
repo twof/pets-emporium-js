@@ -19,13 +19,13 @@ var comments = require('./controllers/comments');
 
 var app = express();
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars')
+app.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(jwt({ 
+app.use(jwt({
   secret: 'shhhhhhared-secret',
   getToken: function fromHeaderOrCookie (req) { //fromHeaderOrQuerystring
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
@@ -43,7 +43,7 @@ app.use(jwt({
     } else if (req.cookies && req.cookies.token) {
       return req.cookies.token;
     }
-    return null;  
+    return null;
   }
 }).unless({
   path: [
